@@ -1,0 +1,355 @@
+"Hello World"
+1+2
+#comment
+
+#same thing
+dog <- 3
+#3 <- dog
+
+#global assignments
+dog <<- 3
+3 ->> dog
+
+dog
+
+#this is numeric
+class(dog)
+#returns false
+is.integer(dog)
+
+dog<-as.integer(dog)
+is.integer(dog)
+
+##basic functions##
+# min, max, sqrt, abs, ceiling, floor #
+
+##if statements
+if(dog < 2)
+{
+  print("Dog is less than 2")
+}else
+{
+  print("Dog is not less than 2")
+}
+
+##while loop
+x<-1
+while(x < 6)
+{
+  print(x)
+  x <- x+1
+}
+
+##for loop
+for(x in 1:10)
+{
+  print(x)
+}
+
+##vector
+dice <- c(1,2,3,4,5,6)
+for (x in dice)
+{
+  print(x)
+}
+
+##lists
+fruits <- list("apple","banana","cherry")
+for(x in fruits)
+{
+  if(x=="banana")
+  {
+    break;
+    ##next will skip banana and print the next thing
+  }
+  print(x)
+}
+
+for(x in dice)
+  for(y in fruits)
+    print(paste(x,y))
+
+
+##functions
+my_function <- function (var_name)
+{
+  ##paste is concatenation
+  return (paste(var_name,"Yay"))
+}
+my_function("woo")
+
+
+##dice
+length(dice)
+#starts at 1. No zero index
+dice[1]
+dice[c(2,3)]
+
+s <- c("aa","bb","cc","dd","ee")
+s[c(2,3)]
+s[c(2,3,3)]
+s[c(2,1,3)]
+s[2:4]
+
+name <- c("Harry","Taylor")
+##makes labels
+names(name) = c("First","Last")
+print(name)
+
+##get average
+dec <- c(3.145,6.234,9.378,10.90,4.546)
+average = sum(dec)/length(dec)
+print(average)
+
+##nearest even
+for(x in dec)
+{
+  if((floor(x)%%2)==0)
+  {
+    print(floor(x))
+  }
+  else
+  {
+    print(ceiling(x))
+  }
+}
+
+
+##return the name of the vector
+#user_names <- c("ä","b","c","e","d")
+#vector_name <- function (vec_name)
+#{
+#  return print(vec_name[c("first","second","third","fourth","Fifth")])
+#}
+
+
+
+##dataframes
+n <- c(2,3,4)
+s <- c(15,18,22)
+b <- c(101,460,600)
+df <- data.frame(n,s,b)
+df[("n")][1]
+df[[2]][1]
+df$n
+##add a row
+new_df <- rbind(df,c(1000,1001,1002))
+#new col
+new_df <- cbind(df,k=c(2000,2001,2002))
+new_df[[4]][2]
+##remove stuff
+new_df <- def[-c(1),-c(1)]
+df
+new_df
+#dimensions
+dim(df)
+ncol(df)
+nrow(df)
+
+##plotting
+x<-c(1,2,3,4,5)
+y<-c(3,7,8,9,12)
+plot(x,y)
+plot(1:10, main = "My graph",xlab="x-axis",ylab="y-axis")
+#           shape   size    color
+plot(1:10,pch = 25,cex = 2,col = "green",type="s")
+
+barplot(y,names.arg=x,density = 10,col="pink")
+
+
+#################### 2/17/22 ##################################
+print(mtcars)
+
+plot(mtcars$cyl,mtcars$mpg,pch=2,cex=2,col="green")
+
+
+install.packages("ggplot2")
+library(ggplot2)
+g <- ggplot(mtcars,aes(x=mpg,y=wt,color=cyl))+geom_point(size=2)+geom_smooth(method = 'loess')+facet_wrap(~cyl)
+
+##import dataset
+setwd("C:/Users/maria/Downloads")
+d <- read.csv("vgsales.csv")
+head(d)
+
+
+
+############Stat Practice#################
+print(head(iris))
+
+##mean
+mean(iris$Petal.Width)
+
+##median
+median(iris$Sepal.Length)
+
+##boxplot
+boxplot(iris$Sepal.Length,horizontal = TRUE)
+
+##range
+max(iris$Sepal.Length)-min(iris$Sepal.Length)
+
+##interquartile range
+IQR(iris$Sepal.Length)
+
+###deviation
+for(x in iris$Sepal.Length)
+{
+  print(mean(iris$Sepal.Length)-x)
+}
+
+##variance
+var(iris$Sepal.Length)
+
+##SD
+sd(iris$Sepal.Length)
+
+####histogram
+hist(iris$Sepal.Width, main = "Iris Sepal Widths",xlab = "Width", col = "Pink",breaks = 20,prob = TRUE)
+
+###historgram with curve
+curve(dnorm(x,mean = mean(iris$Sepal.Width),sd = sd(iris$Sepal.Width))
+      ,col ="Purple",lwd = 2,add=TRUE, yaxt = "n")
+
+##dplyr
+install.packages("dplyr")
+library(dplyr)
+myIris <- distinct(iris)
+
+##step2
+iris %>%
+  select(Sepal.Width,Sepal.Length)
+
+iris %>%
+  count(Species)
+
+iris %>%
+  filter(Species == "setosa")
+
+
+##petal width if 1.5
+iris %>%
+  filter(Petal.Width>1.5) %>%
+  count(Species)
+
+iris %>%
+  group_by(Species) %>%
+  summarise(Petal_Mean = mean(Petal.Length,na.rm = TRUE))
+
+####dataframe
+iris %>%
+  arrange(desc(Petal.Length)) 
+
+iris %>%
+  group_by(Species) %>%
+  summarise(Petal_Mean = mean(Petal.Length,na.rm = TRUE),diff = max(Petal.Length)-min(Petal.Length))
+
+
+
+#################Linear Regression##############################
+# create a linear regression model
+#lm = linear model
+model <- lm(Sepal.Length~Petal.Length,data = iris)
+
+#print
+summary(model)
+
+#plot sepal and petal length
+plot(iris$Sepal.Length,iris$Petal.Length,main = "Petal Length VS. Sepal Length",
+     xlab = "Speal Length", ylab = "Petal Length")
+abline(lm(iris$Petal.Length~iris$Sepal.Length))
+
+##speal and petal width
+plot(iris$Sepal.Width,iris$Petal.Width,main = "Petal Width VS. Sepal Width",
+     xlab = "Speal Width", ylab = "Petal Width")
+abline(lm(iris$Petal.Width~iris$Sepal.Width))
+
+##speal and petal width
+plot(iris$Petal.Length,iris$Petal.Width,main = "Petal Width VS. Sepal Width",
+     xlab = "Speal Width", ylab = "Petal Width")
+abline(lm(iris$Petal.Width~iris$Sepal.Width))
+
+##naive bayes = classification
+####P(full/Pizza)
+
+############data testing##############
+indexes <- sample(2,nrow(iris),replace = T,prob = c(0.2,0.8))
+indexes
+
+training <- iris[indexes == 1,]
+test <- iris[indexes == 2,]
+training
+test
+
+###naive payes
+install.packages("naivebayes")
+library(naivebayes)
+
+model<- naive_bayes(Species~.,data=training,usekernel = T)
+plot(model)
+
+p <- predict(model,test)
+table(p,test$Species)
+
+
+#######logistic regression##########
+###a classification algorithm that calculates 
+###the probability of fitting into one category
+###will be a logistic curve
+
+glm.fit<- glm(Species ~ Petal.Length + Sepal.Width + Sepal.Length+
+                Petal.Width,data = training, family = binomial)
+summary(glm.fit)
+
+glm.probs <- predict(glm.fit, test, type = "response")
+glm.probs[1:5]
+
+glm.pred<- ifelse(glm.probs > 0.5, "Not Setosa","Setosa")
+attach(test)
+table(glm.pred,Species)
+
+
+######################################################################
+###I try lmao###
+install.packages("ISLR")
+library(ISLR)
+head(College)
+
+cindexes <- sample(2,nrow(College),replace = T,prob = c(0.2,0.8))
+cindexes
+
+ctrain <- College[indexes == 1,]
+ctest <- College[indexes == 2,]
+ctrain
+ctest
+
+cmodel<- naive_bayes(Private~.,data=ctrain,usekernel = T)
+plot(cmodel)
+
+p <- predict(cmodel,ctest)
+table(cp,ctest$Private)
+
+glm.fit<- glm(Private ~ Apps + Accept + Enroll+Top10perc+Top25perc+F.Undergrad+
+                P.Undergrad+Outstate+Room.Board+Books+Personal+PhD+Terminal+
+                 S.F.Ratio+perc.alumni+Expend+Grad.Rate,data = ctrain, family = binomial)
+summary(glm.fit)
+
+glm.probs <- predict(glm.fit, ctest, type = "response")
+glm.probs[1:5]
+
+glm.pred<- ifelse(glm.probs > 0.5, "Yes","No")
+attach(ctest)
+table(glm.pred,Private)
+
+
+
+#########################################################################
+######p-values#################
+#<=0.05 is statistically significant
+#>0.05 is not statistically significant
+install.packages("aod")
+library(aod)
+
+wald.test(Sigma = vcoy(glm.fitC), b = coef())
+
+
