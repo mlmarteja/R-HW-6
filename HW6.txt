@@ -1,0 +1,37 @@
+#dataset
+head(rock)
+print(rock)
+
+
+
+############data testing##############
+indexes <- sample(2,nrow(rock),replace = T,prob = c(0.2,0.8))
+indexes
+
+training <- rock[indexes == 1,]
+test <- rock[indexes == 2,]
+training
+test
+
+###########naive payes################
+install.packages("naivebayes")
+library(naivebayes)
+
+model<- naive_bayes(perm~.,data=training,usekernel = T)
+plot(model)
+
+p <- predict(model,test)
+table(p,test$shape)
+
+
+
+#######logistic regression##########
+###a classification algorithm that calculates 
+###the probability of fitting into one category
+###will be a logistic curve
+
+glm.fit<- glm(shape ~ area+ peri + perm ,data = training, family = binomial)
+summary(glm.fit)
+
+glm.probs <- predict(glm.fit, test, type = "response")
+glm.probs[1:5]
