@@ -1,15 +1,23 @@
 #dataset
-head(rock)
-print(rock)
+head(mtcars)
+print(mtcars)
+mtcars
 
+
+##v engine = no
+##straight engine = yes
+##new column
+mtcars$vs2 <-ifelse(mtcars$vs == 0,"no","yes")
+mtcars
+print(mtcars)
 
 
 ############data testing##############
-indexes <- sample(2,nrow(rock),replace = T,prob = c(0.2,0.8))
+indexes <- sample(2,nrow(mtcars),replace = T,prob = c(0.2,0.8))
 indexes
 
-training <- rock[indexes == 1,]
-test <- rock[indexes == 2,]
+training <- mtcars[indexes == 1,]
+test <- mtcars[indexes == 2,]
 training
 test
 
@@ -17,11 +25,11 @@ test
 install.packages("naivebayes")
 library(naivebayes)
 
-model<- naive_bayes(perm~.,data=training,usekernel = T)
+model<- naive_bayes(vs2~.,data=training,usekernel = T)
 plot(model)
 
 p <- predict(model,test)
-table(p,test$shape)
+table(p,test$mpg)
 
 
 
@@ -30,7 +38,7 @@ table(p,test$shape)
 ###the probability of fitting into one category
 ###will be a logistic curve
 
-glm.fit<- glm(shape ~ area+ peri + perm ,data = training, family = binomial)
+glm.fit<- glm(as.factor(vs2) ~ cyl+ disp + hp+drat +wt + qsec + vs + am + gear+carb+mpg,data = training, family = binomial)
 summary(glm.fit)
 
 glm.probs <- predict(glm.fit, test, type = "response")
