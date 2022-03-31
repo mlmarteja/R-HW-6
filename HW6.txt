@@ -4,12 +4,13 @@ print(mtcars)
 mtcars
 
 
-##v engine = no
-##straight engine = yes
+##v engine = 0
+##straight engine =1
 ##new column
-mtcars$vs2 <-ifelse(mtcars$vs == 0,"no","yes")
+mtcars$vs2 <-ifelse(mtcars$vs == 0,"V engine","straight engine")
 mtcars
 print(mtcars)
+head(mtcars)
 
 
 ############data testing##############
@@ -29,7 +30,7 @@ model<- naive_bayes(vs2~.,data=training,usekernel = T)
 plot(model)
 
 p <- predict(model,test)
-table(p,test$mpg)
+table(p,test$vs2)
 
 
 
@@ -42,4 +43,8 @@ glm.fit<- glm(as.factor(vs2) ~ cyl+ disp + hp+drat +wt + qsec + vs + am + gear+c
 summary(glm.fit)
 
 glm.probs <- predict(glm.fit, test, type = "response")
-glm.probs[1:5]
+table(glm.probs,test$vs2)
+
+glm.pred<- ifelse(glm.probs > 0.5, "V Engine","Straight Engine")
+attach(test)
+table(glm.pred,vs2)
