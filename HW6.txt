@@ -48,3 +48,15 @@ table(glm.probs,test$vs2)
 glm.pred<- ifelse(glm.probs > 0.5, "V Engine","Straight Engine")
 attach(test)
 table(glm.pred,vs2)
+
+
+#######plot#######################
+##import ggplot2
+install.packages("ggplot2")
+library(ggplot2)
+
+
+ggplt <- ggplot(mtcars, aes(x = mpg, y = hp)) + 
+  geom_point(color='blue') +
+  geom_smooth(method = lm, se = FALSE,fullrange=TRUE)
+ggplt
