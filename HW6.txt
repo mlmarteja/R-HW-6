@@ -54,9 +54,27 @@ table(glm.pred,vs2)
 ##import ggplot2
 install.packages("ggplot2")
 library(ggplot2)
+install.packages("psych")
+library(psych)
+install.packages("dplyr")
+library(dplyr)
+
+###logistic regressions
+ggplot(mtcars, aes(x=mpg, y=vs)) + 
+  geom_point(alpha=.5) +
+  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial))
 
 
-ggplt <- ggplot(mtcars, aes(x = mpg, y = hp)) + 
-  geom_point(color='blue') +
-  geom_smooth(method = lm, se = FALSE,fullrange=TRUE)
-ggplt
+####naive bayes####
+data <-mtcars
+data$vs2 <- as.factor(data$vs2)
+data$mpg <- as.factor(data$mpg)
+
+# Visualization
+pairs.panels(data[-1])
+
+bp <- ggplot(data,aes(vs2,mpg, fill = vs2)) + 
+  geom_boxplot() +
+  ggtitle("mpg vs. vs2") +
+  scale_y_continuous(trans='log2')
+bp
