@@ -30,6 +30,7 @@ model<- naive_bayes(vs2~.,data=training,usekernel = T)
 plot(model)
 
 p <- predict(model,test)
+p
 table(p,test$vs2)
 
 
@@ -61,8 +62,9 @@ library(dplyr)
 
 ###logistic regressions
 ggplot(mtcars, aes(x=mpg, y=vs)) + 
-  geom_point(alpha=.5) +
-  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial))
+  geom_point(alpha=.5, size=3) +
+  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial))+
+  ggtitle("Logistic Regression: mpy vs. vs2")
 
 
 ####naive bayes####
@@ -75,6 +77,11 @@ pairs.panels(data[-1])
 
 bp <- ggplot(data,aes(vs2,mpg, fill = vs2)) + 
   geom_boxplot() +
-  ggtitle("mpg vs. vs2") +
-  scale_y_continuous(trans='log2')
+  ggtitle("Naive Bayes: mpg vs. vs2")+
+  scale_y_continuous(limits = c(0, max(mtcars$mpg)))
 bp
+
+dp <- ggplot(data,aes(mpg, fill = vs2)) + 
+  geom_density(alpha=.5) +
+  ggtitle("Naive Bayes: mpg vs. vs2")
+dp
